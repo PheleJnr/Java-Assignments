@@ -8,7 +8,7 @@ public class PizzaWahalaOrderTest {
 
     public void testThatGetNumberOfSlicesPerBoxReturnsCorrectSlices() {
 
-        int result = Pizzawahala.getNumberOfSlicesPerBox("Odogwu");
+        int result = PizzaWahala.getNumberOfSlicesPerBox("Odogwu");
 
         int expected = 12;
 
@@ -21,7 +21,7 @@ public class PizzaWahalaOrderTest {
 
     public void testThatGetNumberOfSlicesPerBoxReturnsZeroForWrongCase() {
 
-        int result = Pizzawahala.getNumberOfSlicesPerBox("odogwu");
+        int result = PizzaWahala.getNumberOfSlicesPerBox("odogwu");
 
         int expected = 0;
 
