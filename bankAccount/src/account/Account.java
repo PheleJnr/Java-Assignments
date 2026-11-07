@@ -2,19 +2,19 @@ package account;
 
 public class Account {
     private double balance;
-    private int pin;
+    private String pin;
 
-    public Account(int pin) {
+    public Account(String pin) {
         validatePin(pin);
         this.pin = pin;
     }
 
-    private void validatePin(int pin) {
-        if(pin < 1000 || pin > 9999)
+    private void validatePin(String pin) {
+        if(pin == null || !pin.matches("\\d{4}"))
             throw new IllegalArgumentException("Pin must be exactly 4 digits");
     }
 
-    public double getBalance(int pin) {
+    public double getBalance(String pin) {
         checkPin(pin);
         return balance;
     }
@@ -25,18 +25,18 @@ public class Account {
 
     }
 
-    public void withdraw(double amount, int pin) {
+    public void withdraw(double amount, String pin) {
         checkPin(pin);
         if (amount > 0 && balance >= amount)
             balance -= amount;
     }
 
-    public void checkPin(int pin) {
-        if (pin != this.pin)
+    public void checkPin(String pin) {
+        if (!this.pin.equals(pin))
             throw new IllegalArgumentException("The Pin you entered is incorrect");
     }
 
-    public void changePin(int oldPin, int newPin) {
+    public void changePin(String oldPin, String newPin) {
         checkPin(oldPin);
         validatePin(newPin);
         this.pin = newPin;

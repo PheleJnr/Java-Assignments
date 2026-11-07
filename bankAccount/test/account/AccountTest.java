@@ -7,8 +7,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountTest {
 
-    private int pin = 1234;
-    private int wrongPin = 9999;
+    private String pin = "1234";
+    private String wrongPin = "9999";
     private Account myAccount;
 
     @BeforeEach
@@ -19,7 +19,7 @@ public class AccountTest {
 
 
     @Test
-    public void testThatIHaveAnAccount_AndTheBalanceIsZero(){
+    public void testThatIHaveANewAccount_AndTheBalanceIsZero(){
         assertEquals(0.0, myAccount.getBalance(pin));
     }
 
@@ -51,6 +51,7 @@ public class AccountTest {
 
     @Test
     public void testThatIWithdraw3k_AndTheBalanceIsStillZero(){
+        myAccount.deposit(3000);
         myAccount.withdraw(3000, pin);
         assertEquals(0.0, myAccount.getBalance(pin));
 
@@ -64,40 +65,56 @@ public class AccountTest {
 
     @Test
     public void testThatWhenCreatingPinDuringAccountCreation_ThePinCannotBeLessThan4Digits(){
-        assertThrows(IllegalArgumentException.class, () -> new Account(42));
+        assertThrows(IllegalArgumentException.class, () -> new Account("42"));
     }
 
     @Test
     public void testThatWhenCreatingPinDuringAccountCreation_ThePinCannotBeGreaterThan4Digits(){
-        assertThrows(IllegalArgumentException.class, () -> new Account(42456789));
+        assertThrows(IllegalArgumentException.class, () -> new Account("42456789"));
 
+    }
+
+    @Test
+    public void testThatWhenCreatingPinDuringAccountCreation_ThePinCannotContainLetters(){
+        assertThrows(IllegalArgumentException.class, () -> new Account("12ab"));
+    }
+
+    @Test
+    public void testThatWhenCreatingPinDuringAccountCreation_ThePinCannotBeNull(){
+        assertThrows(IllegalArgumentException.class, () -> new Account(null));
+    }
+
+    @Test
+    public void testThatAPinCanStartWithZero(){
+        Account account = new Account("0123");
+        assertEquals(0.0, account.getBalance("0123"));
     }
 
     @Test
     public void testThatWhenCreatingAnAccountWithAValid4DigitsPin_ItCreatesSuccessfully(){
-        Account account = new Account(1489);
-        assertEquals(0.0, account.getBalance(1489));
+        Account account = new Account("1489");
+        assertEquals(0.0, account.getBalance("1489"));
     }
 
     @Test
     public void testThatWhenWhenChangingAccountPinWithShortPin_PinRemainsUnchanged(){
-        assertThrows(IllegalArgumentException.class, () -> myAccount.changePin(pin, 42));
+        assertThrows(IllegalArgumentException.class, () -> myAccount.changePin(pin, "42"));
 
         assertEquals(0.0, myAccount.getBalance(pin));
     }
 
     @Test
     public void testThatTheAccountPinCanBeChangedToANewOneSuccessfully(){
-        myAccount.changePin(pin, 7777);
+        myAccount.changePin(pin, "7777");
         assertThrows(IllegalArgumentException.class, () -> myAccount.getBalance(pin));
 
-        assertEquals(0.0, myAccount.getBalance(7777));
+        assertEquals(0.0, myAccount.getBalance("7777"));
 
     }
 
     @Test
     public void testThatWhenChangingAccountPinWithWrongPin_AccountPinRemainsUnchanged(){
-        assertThrows(IllegalArgumentException.class, () -> myAccount.changePin(wrongPin, 7777));
+        assertThrows(IllegalArgumentException.class, () -> myAccount.changePin(wrongPin, "7777"));
 
         assertEquals(0.0, myAccount.getBalance(pin));
     }
